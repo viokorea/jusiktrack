@@ -272,9 +272,7 @@ def main():
                     real_value = annot_series.iloc[idx]
                     
                     # Only annotate if the date is reasonably close (e.g. within 5 days)
-                    # Fix: Use timedelta for date arithmetic
-                    date_diff = abs((real_date - date).total_seconds() / 86400)  # Convert to days
-                    if date_diff < 5:
+                    if abs((real_date - date).days) < 5:
                          fig.add_annotation(
                             x=real_date,
                             y=real_value,
@@ -312,25 +310,25 @@ def main():
         margin=dict(l=0, r=0, t=30, b=0) # Optimize margins for mobile
     )
     
-    # Add vertical line and annotation for current date
-    # Get the latest date with data for each portfolio
-    latest_dk = pct_change_data["DK Portfolio"].dropna().index[-1] if "DK Portfolio" in pct_change_data.columns else None
-    latest_js = pct_change_data["JS Portfolio"].dropna().index[-1] if "JS Portfolio" in pct_change_data.columns else None
+    # # Add vertical line and annotation for current date
+    # # Get the latest date with data for each portfolio
+    # latest_dk = pct_change_data["DK Portfolio"].dropna().index[-1] if "DK Portfolio" in pct_change_data.columns else None
+    # latest_js = pct_change_data["JS Portfolio"].dropna().index[-1] if "JS Portfolio" in pct_change_data.columns else None
     
-    # Use the most recent date
-    current_date = max([d for d in [latest_dk, latest_js] if d is not None])
+    # # Use the most recent date
+    # current_date = max([d for d in [latest_dk, latest_js] if d is not None])
     
-    # Add vertical line at current date
-    fig.add_vline(
-        x=current_date,
-        line_dash="dot",
-        line_color="gray",
-        opacity=0.5,
-        annotation_text=f"Today: {current_date.strftime('%Y-%m-%d')}",
-        annotation_position="top",
-        annotation_font_size=11,
-        annotation_font_color="white"
-    )
+    # # Add vertical line at current date
+    # fig.add_vline(
+    #     x=current_date,
+    #     line_dash="dot",
+    #     line_color="gray",
+    #     opacity=0.5,
+    #     annotation_text=f"Today: {current_date.strftime('%Y-%m-%d')}",
+    #     annotation_position="top",
+    #     annotation_font_size=11,
+    #     annotation_font_color="white"
+    # )
     
     st.plotly_chart(fig, use_container_width=True)
 
