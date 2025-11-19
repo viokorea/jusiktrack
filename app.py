@@ -272,7 +272,9 @@ def main():
                     real_value = annot_series.iloc[idx]
                     
                     # Only annotate if the date is reasonably close (e.g. within 5 days)
-                    if abs((real_date - date).days) < 5:
+                    # Fix: Use timedelta for date arithmetic
+                    date_diff = abs((real_date - date).total_seconds() / 86400)  # Convert to days
+                    if date_diff < 5:
                          fig.add_annotation(
                             x=real_date,
                             y=real_value,
